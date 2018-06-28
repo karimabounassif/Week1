@@ -1,28 +1,14 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
 
 public class Main {
 
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "e3a545jf";
-    private static final String CONN_STRING = "jdbc:mysql://localhost/week1?useSSL=false&useUnicode=true" +
-            "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    public static void main(String[] args) throws SQLException, IOException {
 
-    public static void main(String[] args) throws SQLException {
-
-        Connection conn = null;
-
-        try {
-            conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-            System.out.println("Connected");
-        } catch (SQLException e) {
-            System.err.println(e);
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
-        }
+        dbManager.insertDB(Download.download(new File("week1-stocks.json")));
+        quoteAgg agg = dbManager.getAgg("2018-06-22", "MSFT");
+        System.out.println("\nDone");
 
     }
 }
